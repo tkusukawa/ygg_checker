@@ -1,0 +1,2 @@
+#! /bin/sh
+cd /opt/redmine; RAILS_ENV=production /usr/local/rbenv/shims/bundle exec rails runner 'puts Redmine::Info.environment'

@@ -1,0 +1,25 @@
+#! /bin/sh
+mkdir -p ~/.yggdrasil/tmp
+touch ~/.yggdrasil/tmp/listen_port.last
+for TRY in `seq 1 5`; do
+  if [ $TRY != 1 ]; then
+    sleep 3
+  fi
+  LAST=`cat ~/.yggdrasil/tmp/listen_port.last`
+  netstat -lp --numeric-ports 2> /dev/null |
+    grep '^tcp' |
+    sed 's/:[0-9]\{5\}/:-----/' |
+    sed 's| *$||' |
+    sed 's|[0-9]*\(/.*\)$|\1|' |
+    sed 's|/postgres|/postmaster|' |
+    sed 's|/smtpd|/master|' |
+    sed 's|/pop3-login|/dovecot|' |
+    grep -v '/UnstableProcess' |
+    LC_ALL=C sort > ~/.yggdrasil/tmp/listen_port.last
+  RES=`cat ~/.yggdrasil/tmp/listen_port.last`
+  if [ "$LAST" == "$RES" ]; then
+    echo "$RES"
+    exit
+  fi
+done
+echo 'RETRY OVER'

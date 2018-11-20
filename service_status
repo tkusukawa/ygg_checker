@@ -1,0 +1,25 @@
+#! /bin/sh
+mkdir -p ~/.yggdrasil/tmp
+touch ~/.yggdrasil/tmp/service_status.last
+for TRY in `seq 1 5`; do
+  if [ $TRY != 1 ]; then
+    sleep 3
+  fi
+  LAST=`cat ~/.yggdrasil/tmp/service_status.last`
+  (env -i /sbin/service --status-all & wait ) 2> /dev/null |
+    grep -v '^sendmail' |
+    grep -v '^/' |
+    grep -v '^recursive clients:' |
+    grep -v ' LOG_DROP   all ' |
+    sed 's/^.....ACCEPT     /     ACCEPT     /' |
+    sed 's/LOG_DROP (.*)/LOG_DROP ()/' |
+    sed 's/\[pid[^]]*\]/\[pid\]/' |
+    sed 's/(PID[^)]*)/(PID)/' |
+    sed 's/(pid[^)]*)/(pid)/' > ~/.yggdrasil/tmp/service_status.last
+  RES=`cat ~/.yggdrasil/tmp/service_status.last`
+  if [ "$LAST" == "$RES" ]; then
+    echo "$RES"
+    exit
+  fi
+done
+echo 'RETRY OVER'

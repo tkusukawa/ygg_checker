@@ -1,0 +1,6 @@
+#! /bin/sh
+mount |
+grep -v '(.*soft.*)' |
+grep -v '(.*bind.*)' |
+egrep -v '^sunrpc' |
+LC_ALL=C sort
