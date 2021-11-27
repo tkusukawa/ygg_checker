@@ -1,2 +1,3 @@
 #! /bin/sh
 LC_ALL=C chkconfig --list
+systemctl list-unit-files
