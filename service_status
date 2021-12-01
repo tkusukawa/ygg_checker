@@ -12,6 +12,10 @@ for TRY in `seq 1 5`; do
     grep -v '^recursive clients:' |
     grep -v ' LOG_DROP   all ' |
     grep -v 'Active: ' |
+    sed 's/Process: [0-9]* /Process: X /' |
+    sed 's/└─[0-9]* /└─X /' |
+    sed 's/^... .. ..:..:.. /XXX XX XX:XX:XX /' |
+    sed 's/\[[0-9]*\]/\[X\]/' |
     sed 's/^.....ACCEPT     /     ACCEPT     /' |
     sed 's/LOG_DROP (.*)/LOG_DROP ()/' |
     sed 's/\[pid[^]]*\]/\[pid\]/' |

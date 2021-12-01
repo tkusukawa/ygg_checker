@@ -3,4 +3,7 @@ mount |
 grep -v '(.*soft.*)' |
 grep -v '(.*bind.*)' |
 egrep -v '^sunrpc' |
+grep -v 'type tmpfs' |
+grep -v 'type devtmpfs' |
+grep -v 'type autofs' |
 LC_ALL=C sort
