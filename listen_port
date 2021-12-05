@@ -15,7 +15,11 @@ for TRY in `seq 1 5`; do
     sed 's|/smtpd|/master|' |
     sed 's|/pop3-login|/dovecot|' |
     grep -v '/UnstableProcess' |
+    grep -v '/Passenger' |
     LC_ALL=C sort > ~/.yggdrasil/tmp/listen_port.last
+  echo >> ~/.yggdrasil/tmp/listen_port.last
+  echo firewall-cmd --list-services >> ~/.yggdrasil/tmp/listen_port.last
+  firewall-cmd --list-services >> ~/.yggdrasil/tmp/listen_port.last
   RES=`cat ~/.yggdrasil/tmp/listen_port.last`
   if [ "$LAST" == "$RES" ]; then
     echo "$RES"

@@ -1,6 +1,7 @@
 #! /bin/sh
 LC_ALL=C chkconfig --list
 systemctl list-unit-files |
+  sed 's|\ \+| |' |
   grep -v 'session-' |
   egrep -v 'user-[0-9]*.slice' |
   grep -v 'unit files listed.'

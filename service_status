@@ -12,6 +12,7 @@ for TRY in `seq 1 5`; do
     grep -v '^recursive clients:' |
     grep -v ' LOG_DROP   all ' |
     grep -v 'Active: ' |
+    grep -v 'Starting Jenkins \[  OK  \]' |
     sed 's/Process: [0-9]* /Process: X /' |
     sed 's/└─[0-9]* /└─X /' |
     sed 's/^... .. ..:..:.. /XXX XX XX:XX:XX /' |
@@ -21,6 +22,8 @@ for TRY in `seq 1 5`; do
     sed 's/\[pid[^]]*\]/\[pid\]/' |
     sed 's/(PID[^)]*)/(PID)/' |
     sed 's/(pid[^)]*)/(pid)/' > ~/.yggdrasil/tmp/service_status.last
+  echo >> ~/.yggdrasil/tmp/service_status.last
+  systemctl list-units --type=service >> ~/.yggdrasil/tmp/service_status.last
   RES=`cat ~/.yggdrasil/tmp/service_status.last`
   if [ "$LAST" == "$RES" ]; then
     echo "$RES"

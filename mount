@@ -6,4 +6,5 @@ egrep -v '^sunrpc' |
 grep -v 'type tmpfs' |
 grep -v 'type devtmpfs' |
 grep -v 'type autofs' |
+grep -v 'type binfmt_misc' |
 LC_ALL=C sort
